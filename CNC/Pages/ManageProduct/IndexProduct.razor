@@ -1,0 +1,96 @@
+﻿@page "/Product"
+@using CNC.Entities;
+@inject CNC.Service.IProductService ProductService
+@inject CNC.Service.ICategoryService CategoryService
+@inject CNC.Service.IBillDetailService BillDetailService
+@inject CNC.Service.ISizeColorProductService SizeColorProductService
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+<h3>Manage Product</h3>
+
+@if (_product.LongCount() == 0)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Description</th>
+                <th>Detail</th>
+                <th>Edit</th>
+                <th>Block</th>
+                <th>delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var value in _product)
+            {
+            <tr>
+                <td>@value.Id</td>
+                <td>@value.Name</td>
+                <td>@CategoryService.getCategoryFromId(value.CategoryId).Name</td>
+                <td>@value.Price</td>
+                <td>@value.Description</td>
+                <td><a href="/Product/Detail/@value.Id">Detail</a></td>
+                <td><a href="/Product/Update/@value.Id">Edit</a></td>
+                @if(@value.Status==1){
+                   <td><button class="btn btn-danger" @onclick="@(()=>BlockUnblock(value.Id,0))">Block</button></td> 
+                }
+                else if(@value.Status==0){
+                    <td><button class="btn btn-success" @onclick="@(()=>BlockUnblock(value.Id,1))">Unblock</button></td> 
+                }
+
+                <td><button class="btn btn-danger" @onclick="@(()=>Delete(value.Id))">Xóa</button></td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    
+}
+<a href="/Product/Create">Add new Product</a>
+
+@code {
+
+    private IEnumerable<CNC.Entities.Product> _product;
+    private IEnumerable<CNC.Entities.BillDetail> _billdetail;
+
+    protected override void OnInitialized()
+    {
+        _product = ProductService.getAllProducts();
+    }
+
+    private async void Delete(string idproduct)
+    {  
+        if (!await JSRuntime.InvokeAsync<bool>("confirm", $"Are You Delete Product {idproduct} - {ProductService.getProductFromId(idproduct).Name}"))
+            return;/*nut huy*/
+
+        _billdetail = BillDetailService.GetListResultFromIdProduct(idproduct);
+        if (_billdetail.Count() != 0)
+        {
+            await JSRuntime.InvokeAsync<string>("alert", "Cannot delete this product");
+            return;
+            
+        }
+        else
+        {
+            ProductService.deleteProduct(idproduct);
+            SizeColorProductService.DeleteFromIdProduct(idproduct);
+            await JSRuntime.InvokeAsync<string>("alert", "This product was deleted");
+            return;
+
+        }
+    }
+    private void BlockUnblock(string idproduct,int status)
+    {
+        ProductService.UpdateStatusProduct(idproduct, status);
+    }
+    
+
+}
+

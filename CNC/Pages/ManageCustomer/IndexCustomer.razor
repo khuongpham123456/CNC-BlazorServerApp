@@ -1,0 +1,62 @@
+﻿@page "/Customer"
+@inject CNC.Service.ICustomerService CustomerService
+@inject CNC.Service.IAccountService AccountService
+
+<h3>Manage Customer</h3>
+@if ( _account.LongCount() == 0)
+{
+    <p><em>Loading...</em></p>
+}
+else 
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Date</th>
+                <th>Usename</th>
+                <th>Block</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var value in _account)
+            {
+                <tr>
+                    <td>@value.Id</td>
+                    <td>@CustomerService.GetCustomerFromIdAccount(@value.Id).Name</td>
+                    <td>@CustomerService.GetCustomerFromIdAccount(@value.Id).Phone</td>
+                    <td>@CustomerService.GetCustomerFromIdAccount(@value.Id).Email</td>
+                    <td>@CustomerService.GetCustomerFromIdAccount(@value.Id).Address</td>
+                    <td>@value.CreatedDate</td>
+                    <td>@value.Username</td>
+                     @if(@value.Status==0){
+                        <td> <button type="button" class="btn btn-danger " @onclick="@(()=>{AccountService.UpdateStatus(@value.Id,1);})">Block</button></td>
+
+                    }else{
+                        <td> <button type="button" class="btn btn-success" @onclick="@(()=>{AccountService.UpdateStatus(@value.Id,0);})">Action</button></td>
+                    }
+                     
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IEnumerable<CNC.Entities.Customer> _customer;
+    private IEnumerable<CNC.Entities.Account> _account;
+    
+
+    protected override void OnInitialized()
+    {
+
+        _account = AccountService.GetAllAccountCustomer();
+    }
+
+    
+}

@@ -1,0 +1,51 @@
+﻿@page "/Bill/BillDetail/{BillId}"
+@inject CNC.Service.IProductService ProductService;
+@inject CNC.Service.IBillDetailService BillDetailService;
+<h3>Manage Bill</h3>
+@if (_billdetail.LongCount() == 0)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID Bill</th>
+                <th>Name product</th>
+                <th>Amout</th>
+                <th>Price</th>
+                <th>Total</th>
+       
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var value in _billdetail)
+            {
+                <tr>
+                    <td>@value.BillId</td>
+                    <td>@ProductService.getProductFromId(@value.ProductId).Name</td>
+                    <td>@value.Amount</td>
+                    <td>@ProductService.getProductFromId(@value.ProductId).Price</td>
+                    <td>@(value.Amount * ProductService.getProductFromId(@value.ProductId).Price)</td>
+                    
+                   
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public string BillId { get; set; }
+    private IEnumerable<CNC.Entities.BillDetail> _billdetail;
+    private IEnumerable<CNC.Entities.Product> _product;
+   
+    protected override void OnInitialized()
+    {
+        _billdetail =BillDetailService.GetBillDetailFromId(BillId);
+    }
+    
+
+}

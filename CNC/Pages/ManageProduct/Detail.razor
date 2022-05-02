@@ -1,0 +1,60 @@
+﻿@page "/Product/Detail/{IdProduct}"
+@inject CNC.Service.IProductService ProductService
+@inject CNC.Service.ICategoryService CategoryService
+@inject CNC.Service.ISizeService SizeService
+@inject CNC.Service.IColorService ColorService
+@inject CNC.Service.ISizeColorProductService SizeColorProductService
+
+<h3>Detail</h3>
+
+@if (_sizecolorproduct == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID Product</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Size</th>
+                <th>Color</th>
+                <th>Image</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var value in _sizecolorproduct)
+            {
+            <tr>
+                <td>@value.ProductId</td>
+                <td>@ProductService.getProductFromId(@value.ProductId).Name</td>
+                <td>@ProductService.getProductFromId(@value.ProductId).Price</td>
+                <td>@value.Quantity</td>
+                <td>@SizeService.getSizeFromId(@value.SizeId).Name</td>
+                <td>@ColorService.getColorFromId(@value.ColorId).Name</td>
+                <td>@value.Image</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public string IdProduct { get; set; }
+    private IEnumerable<CNC.Entities.Product> _product;
+    private IEnumerable<CNC.Entities.Color> _color;
+    private IEnumerable<CNC.Entities.Size> _size;
+    private IEnumerable<CNC.Entities.SizeColorProduct> _sizecolorproduct;
+
+    protected override void OnInitialized()
+    {
+        _sizecolorproduct = SizeColorProductService.GetResultFromIdProduct(IdProduct);
+    }
+}
+
+
+

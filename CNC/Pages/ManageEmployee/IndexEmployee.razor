@@ -1,0 +1,68 @@
+﻿@page "/Employee"
+@using CNC.Entities;
+@inject CNC.Service.IEmployeeService EmployeeService;
+@inject CNC.Service.IAccountService AccountService;
+@inject IJSRuntime JSRuntime
+<h3>Manage Employee</h3>
+@if (_employee.LongCount() == 0)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table" >
+        <thead>
+            <tr>
+                <th>ID Employee</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Create date</th>
+                <th>Account Id</th>
+                <th>user name</th>
+                <th>Delete</th>
+                <th>decentralization</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var value in _employee)
+            {
+                <tr>
+                    <td>@value.Id</td>
+                    <td>@value.Name</td>
+                    <td>@value.Phone</td>
+                    <td>@value.Email</td>
+                    <td>@value.Address</td>
+                    <td>@value.CreatedDate</td>
+                    <td>@value.AccountId</td>
+                    <td>@AccountService.GetAccountFromAccountId(@value.AccountId).Username</td>
+                    <td><button class="btn btn-danger" @onclick="(()=> DeleteAccount(value))">Delete</button></td>
+                    <td><a href="./Employee/Decentralization/@value.Id">decentralization</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IEnumerable<CNC.Entities.Employee> _employee;
+    private IEnumerable<CNC.Entities.Account> _account;
+    int message = 0;
+
+    protected override void OnInitialized()
+    {
+        _employee = EmployeeService.getAllEmployees();
+        message++;
+    }
+    private async void DeleteAccount(Employee Employee)
+    {
+        if (!await JSRuntime.InvokeAsync<bool>("confirm", $"Are You Delete Account {AccountService.GetAccountFromAccountId(Employee.AccountId).Username}"))
+            return;/*nut huy*/
+        AccountService.DeleteAccount(AccountService.GetAccountFromAccountId(Employee.AccountId));
+        EmployeeService.DeleteEmployee(Employee);
+        _employee = EmployeeService.getAllEmployees();
+
+    }
+
+}

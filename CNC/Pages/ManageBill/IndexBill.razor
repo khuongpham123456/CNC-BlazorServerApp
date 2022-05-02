@@ -1,0 +1,57 @@
+﻿@page "/Bill"
+@inject CNC.Service.IBillService BillService;
+@inject CNC.Service.ICustomerService CustomerService;
+<h3>Manage Bill @_status</h3>
+@if (_bill.LongCount() == 0)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Create date</th>
+                <th>Total</th>
+                <th>Voucher</th>
+                <th>User</th>
+                <th>Status</th>
+                <th>Detail</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var value in _bill)
+            {
+                <tr>
+                    <td>@value.Id</td>
+                    <td>@value.CreatedDate</td>
+                    <td>@value.Total</td>
+                    <td>@value.Voucher</td>
+                    <td>@CustomerService.GetCustomerFromIdUser(@value.UserId).Name</td>
+                    @if(@value.StatusBill==0){
+                        <td> <button type="button" class="btn btn-danger " @onclick="@(()=>{BillService.UpdateStatus(@value.Id,1);})">Chưa xác nhận</button></td>
+
+                    }else{
+                        <td> <button type="button" class="btn btn-success " disabled>Đã xác nhận</button></td>
+                    }
+                    
+                    <td><a href="Bill/BillDetail/@value.Id">detail</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IEnumerable<CNC.Entities.Bill> _bill;
+    private IEnumerable<CNC.Entities.Voucher> _voucher;
+    int _status = 0;
+    protected override void OnInitialized()
+    {
+        _status++;
+        _bill = BillService.getAllBills();
+    }
+    
+
+}

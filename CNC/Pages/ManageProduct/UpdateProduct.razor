@@ -1,0 +1,124 @@
+﻿@page "/Product/Update/{IdProduct}"
+@inject CNC.Service.IProductService ProductService
+@inject CNC.Service.IColorService ColorService
+@inject CNC.Service.ISizeService SizeService
+@inject CNC.Service.ISizeColorProductService SizeColorProductService
+@using CNC.Entities
+@inject IJSRuntime JSRuntime
+<div>
+   <EditForm Model="_item" OnValidSubmit="@Save_Click">
+        <DataAnnotationsValidator />
+         <div class="form-group">
+            <label class="control-label col-md-2">Id Product</label>
+            <div class="col-md-3">
+                <InputText class="form-control" @bind-Value="_item.Id" disabled="True"/>
+                <ValidationMessage For="(() => _item.Id)" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Name</label>
+            <div class="col-md-3">
+                <InputText class="form-control" @bind-Value="_item.Name" />
+                <ValidationMessage For="(() => _item.Name)" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Price</label>
+            <div class="col-md-3">
+                <InputNumber class="form-control" @bind-Value="_item.Price" />
+                <ValidationMessage For="(() => _item.Price)" />
+            </div>
+        </div>
+          <div class="form-group">
+            <label class="control-label col-md-2">Category</label>
+            <div class="col-md-3">
+                <InputText class="form-control" @bind-Value="_item.CategoryId" />
+                <ValidationMessage For="(() => _item.CategoryId)" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Description</label>
+            <div class="col-md-3">
+                <InputText class="form-control" @bind-Value="_item.Description" />
+                <ValidationMessage For="(() => _item.Description)" />
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Size</th>
+                    <th>Color</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var value in @SizeColorProductService.GetResultFromIdProduct(_item.Id))
+                {
+                    <tr>
+                        <th>
+                            <InputText class="form-control" @bind-Value="@SizeService.getSizeFromId(@value.SizeId).Name" disabled="True"/>
+                            <ValidationMessage For="(() => SizeService.getSizeFromId(value.SizeId).Name )" />
+                        </th>
+                        <th>
+                            <InputText class="form-control" @bind-Value="@ColorService.getColorFromId(@value.ColorId).Name" disabled="True"/>
+                            <ValidationMessage For="(() => ColorService.getColorFromId(value.ColorId).Name )" />
+                        </th>
+                        <th>
+                            <InputNumber class="form-control" @bind-Value="@value.Quantity"/>
+                            <ValidationMessage For="(() => value.Quantity )" />
+                        </th>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-3 text-right esh-button-actions">
+                <a href="/Product" class="btn esh-button esh-button-secondary">
+                    [ Cancel ]
+                </a>
+                <button type="submit" class="btn esh-button esh-button-primary">
+                    [ Save ]
+                </button>
+            </div>
+        </div>
+        
+    </EditForm> 
+</div>
+
+    @code {
+    [Parameter]
+    public string IdProduct { get; set; }
+    private Product _item;
+    public IEnumerable<Product> _product;
+
+    protected override void OnInitialized()
+    {
+        _item = ProductService.getProductFromId(IdProduct);
+        
+
+    }
+    private string name{ get; set; }
+    private async void Save_Click()
+    {
+        _product = ProductService.getAllProducts();
+        foreach(Product product in _product)
+        {
+            if (_item.Name == product.Name)
+            {
+                if (_item.Id != product.Id)
+                {
+                    await JSRuntime.InvokeAsync<string>("alert", "This name is exist");
+                    return;
+                    
+                }
+            }
+        }
+        
+        
+
+
+    }
+}
+
+
