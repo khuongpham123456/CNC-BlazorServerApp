@@ -5,7 +5,11 @@ namespace CNC.Service
 {
     public interface ISizeColorProductService
     {
-        IEnumerable<SizeColorProduct> GetResultFromIdProduct(string IdProduct);
-        void DeleteFromIdProduct(string idproduct);
+        void AddSizeColorProduct(SizeColorProduct sizeColorProduct);
+        IEnumerable<SizeColorProduct> GetResultFromIdProduct(int IdProduct);
+        void DeleteFromIdProduct(int idproduct);
+
+        SizeColorProduct CheckExistProduct(int sizeId, int colorId, int productId);
+
     }
 }

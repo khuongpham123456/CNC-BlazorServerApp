@@ -16,12 +16,12 @@ namespace CNC.Service
         }
 
 
-        public Customer GetCustomerFromIdAccount(string id)
+        public Customer GetCustomerFromIdAccount(int id)
         {
             return _applicationDbContext.Users.FirstOrDefault(x => x.AccountId == id);
         }
 
-        public Customer GetCustomerFromIdUser(string id)
+        public Customer GetCustomerFromIdUser(int id)
         {
             return _applicationDbContext.Users.FirstOrDefault(x => x.Id == id);
         }

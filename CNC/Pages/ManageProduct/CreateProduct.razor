@@ -154,8 +154,6 @@
         
         <div class="tab-content">
             <h3>CreateProduct</h3>
-
-
             <div>
                 <EditForm Model="_product" OnValidSubmit="@Create_Click">
                     <DataAnnotationsValidator />
@@ -198,11 +196,6 @@
                             <ValidationMessage For="(() => _product.Description)" />
                         </div>
                     </div>
-
-
-
-
-
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-3 text-right esh-button-actions">
                             <a href="Product" class="btn esh-button esh-button-secondary">
@@ -219,8 +212,6 @@
 
         </div>
     </div>
-
-
 </div>
 
 @code {
@@ -229,52 +220,44 @@
     private IEnumerable<CNC.Entities.Category> _category;
     private IEnumerable<CNC.Entities.Size> _size;
     private IEnumerable<CNC.Entities.Color> _color;
-
+    private CNC.Entities.Product _prd;
 
 
     protected override void OnInitialized()
     {
         _category = CategoryService.getAllCategories();
-        
-
-
-
         _size = SizeService.getAllSize();
         _color = ColorService.getAllColor();
     }
-    private IEnumerable<CNC.Entities.Product> _prd;
+
     private async void Create_Click()
     {
 
-        _prd = ProductService.getAllProducts();
-        foreach(Product product in _prd)
+        _prd = ProductService.findByNameProduct(_product.Name);
+        if(_prd != null)
         {
-            if (_product.Name == product.Name)
-            {
-                await JSRuntime.InvokeAsync<string>("alert", "This name is exist");
-                return;
-
-            }
-            else
-            {
-                int id = int.Parse( ProductService.getNewIdProduct() );
-                string NameNewProduct = _product.Name;
-                string CatagoryIdNewProduct = _product.CategoryId;
-                int PriceNewProduct = _product.Price;
-                string DescriptionNewProduct = _product.Description;
-                CNC.Entities.Product newproduct = new CNC.Entities.Product();
-                newproduct.Id = (id+1).ToString();
-                newproduct.Name = NameNewProduct;
-                newproduct.CategoryId = CatagoryIdNewProduct;
-                newproduct.Price = PriceNewProduct;
-                newproduct.Description = DescriptionNewProduct;
-                ProductService.addProduct(newproduct);
-                await JSRuntime.InvokeAsync<string>("alert", "Add new product");
-                return;
-            }
+            await JSRuntime.InvokeAsync<string>("alert", "This name is exist");
+            return;
         }
+        else
+        {
+            string NameNewProduct = _product.Name;
+            int CatagoryIdNewProduct = _product.CategoryId;
+            int PriceNewProduct = _product.Price;
+            string DescriptionNewProduct = _product.Description;
+            CNC.Entities.Product newproduct = new CNC.Entities.Product();
+            newproduct.Name = NameNewProduct;
+            newproduct.CategoryId = CatagoryIdNewProduct;
+            newproduct.Price = PriceNewProduct;
+            newproduct.Description = DescriptionNewProduct;
+            ProductService.addProduct(newproduct);
+            await JSRuntime.InvokeAsync<string>("alert", "Add new product");
+            NavigationManager.NavigateTo("/Product");
+            return;
+        }
+    }
 
-        
+
 
     }
 

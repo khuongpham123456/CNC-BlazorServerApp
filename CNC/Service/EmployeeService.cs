@@ -1,5 +1,7 @@
 ﻿using CNC.Data;
 using CNC.Entities;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,7 +17,8 @@ namespace CNC.Service
 
         public void DeleteEmployee(Employee employee)
         {
-            _appLicationDbContext.Remove(employee);
+            _appLicationDbContext.Entry(employee).State = EntityState.Deleted;
+            _appLicationDbContext.Employee.Remove(employee);
             _appLicationDbContext.SaveChanges();
         }
 

@@ -9,16 +9,17 @@ namespace CNC.Entities
 {
     public class Product
     {
-        [Key]
-        public string Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string CategoryId { get; set; }
+        public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
         public int Price { get; set; }
         public ICollection<Image> Images { get; set; }
         public ICollection<BillDetail> BillDetails { get; set; }
+        public ICollection<SizeColorProduct> SizeColorProducts { get; set; }
         public int Status { get; set; }
     }
 }

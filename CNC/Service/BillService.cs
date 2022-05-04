@@ -16,17 +16,17 @@ namespace CNC.Service
         {
             return _appLicationDbContext.bills.ToList();
         }
-        public Bill GetBill(string id)
+        public Bill GetBill(int id)
         {
             return _appLicationDbContext.bills.FirstOrDefault(x => x.Id == id);
         }
 
-        public Bill GetBillFromId(string id)
+        public Bill GetBillFromId(int id)
         {
             return _appLicationDbContext.bills.FirstOrDefault(x => x.Id == id);
         }
 
-        public void UpdateStatus(string IdBill, int Status)
+        public void UpdateStatus(int IdBill, int Status)
         {
 
             /*var bill = new Bill()

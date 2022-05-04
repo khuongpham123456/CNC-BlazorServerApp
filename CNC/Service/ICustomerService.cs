@@ -8,8 +8,8 @@ namespace CNC.Service
 {
     public interface ICustomerService
     {
-        Customer GetCustomerFromIdUser(string id);
-        Customer GetCustomerFromIdAccount(string id);
+        Customer GetCustomerFromIdUser(int id);
+        Customer GetCustomerFromIdAccount(int id);
 
     }
 }

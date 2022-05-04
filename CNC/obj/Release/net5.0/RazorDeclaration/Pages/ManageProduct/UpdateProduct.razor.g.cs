@@ -13,77 +13,77 @@ namespace CNC.Pages.ManageProduct
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Components;
 #nullable restore
-#line 1 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 1 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using System.Net.Http;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 2 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using Microsoft.AspNetCore.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 3 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using Microsoft.AspNetCore.Components.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 4 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using Microsoft.AspNetCore.Components.Forms;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 5 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using Microsoft.AspNetCore.Components.Routing;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 6 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using Microsoft.AspNetCore.Components.Web;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 7 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 7 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 8 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 8 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using Microsoft.JSInterop;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 9 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 9 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using CNC;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 10 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 10 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using CNC.Shared;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "C:\Users\ASUS\Downloads\cnc-master\CNC\Pages\ManageProduct\UpdateProduct.razor"
+#line 7 "D:\Individual_Project\C#\cnc\CNC\Pages\ManageProduct\UpdateProduct.razor"
 using CNC.Entities;
 
 #line default
@@ -98,24 +98,28 @@ using CNC.Entities;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 89 "C:\Users\ASUS\Downloads\cnc-master\CNC\Pages\ManageProduct\UpdateProduct.razor"
-           
-    [Parameter]
+#line 100 "D:\Individual_Project\C#\cnc\CNC\Pages\ManageProduct\UpdateProduct.razor"
+  [Parameter]
     public string IdProduct { get; set; }
     private Product _item;
     public IEnumerable<Product> _product;
+    public IEnumerable<Category> _category;
+    public IEnumerable<Size> _size;
+    public IEnumerable<Color> _color;
+    private string name { get; set; }
 
     protected override void OnInitialized()
     {
-        _item = ProductService.getProductFromId(IdProduct);
-        
-
+        _item = ProductService.getProductFromId(int.Parse(IdProduct));
+        _category = CategoryService.getAllCategories();
+        _size = SizeService.getAllSize();
+        _color = ColorService.getAllColor();
     }
-    private string name{ get; set; }
+
     private async void Save_Click()
     {
         _product = ProductService.getAllProducts();
-        foreach(Product product in _product)
+        foreach (Product product in _product)
         {
             if (_item.Name == product.Name)
             {
@@ -123,21 +127,22 @@ using CNC.Entities;
                 {
                     await JSRuntime.InvokeAsync<string>("alert", "This name is exist");
                     return;
-                    
+
                 }
             }
         }
-        
-        
 
 
-    }
+
+
+    } 
 
 #line default
 #line hidden
 #nullable disable
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime JSRuntime { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private CNC.Service.ISizeColorProductService SizeColorProductService { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private CNC.Service.ICategoryService CategoryService { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private CNC.Service.ISizeService SizeService { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private CNC.Service.IColorService ColorService { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private CNC.Service.IProductService ProductService { get; set; }

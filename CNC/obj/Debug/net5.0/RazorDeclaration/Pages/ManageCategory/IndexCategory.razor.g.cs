@@ -13,77 +13,77 @@ namespace CNC.Pages.ManageCategory
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Components;
 #nullable restore
-#line 1 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 1 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using System.Net.Http;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 2 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using Microsoft.AspNetCore.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 3 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using Microsoft.AspNetCore.Components.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 4 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using Microsoft.AspNetCore.Components.Forms;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 5 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using Microsoft.AspNetCore.Components.Routing;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 6 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using Microsoft.AspNetCore.Components.Web;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 7 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 7 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 8 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 8 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using Microsoft.JSInterop;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 9 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 9 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using CNC;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 10 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 10 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using CNC.Shared;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Users\ASUS\Downloads\cnc-master\CNC\Pages\ManageCategory\IndexCategory.razor"
+#line 2 "D:\Individual_Project\C#\cnc\CNC\Pages\ManageCategory\IndexCategory.razor"
 using CNC.Entities;
 
 #line default
@@ -98,46 +98,43 @@ using CNC.Entities;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 44 "C:\Users\ASUS\Downloads\cnc-master\CNC\Pages\ManageCategory\IndexCategory.razor"
-       
+#line 46 "D:\Individual_Project\C#\cnc\CNC\Pages\ManageCategory\IndexCategory.razor"
+                private IEnumerable<CNC.Entities.Category> _category;
+                private IEnumerable<CNC.Entities.Product> _product;
 
-    private IEnumerable<CNC.Entities.Category> _category;
-    private IEnumerable<CNC.Entities.Product> _product;
+                protected override void OnInitialized()
+                {
+                    _category = CategoryService.getAllCategories();
+                }
+                private void BlockUnblock(int idcategory, int status)
+                {
+                    CategoryService.UpdateStatusCategory(idcategory, status);
+                }
+                private async void Delete(int idcategory)
+                {
+                    if (!await JSRuntime.InvokeAsync<bool>("confirm", $"Are You Delete Category {idcategory} - {CategoryService.getCategoryFromId(idcategory).Name}"))
+                        return;/*nut huy*/
 
-    protected override void OnInitialized()
-    {
-        _category = CategoryService.getAllCategories();
-    }
-    private void BlockUnblock(string idcategory, int status)
-    {
-        CategoryService.UpdateStatusCategory(idcategory, status);
-    }
-    private async void Delete(string idcategory)
-    {
-        if (!await JSRuntime.InvokeAsync<bool>("confirm", $"Are You Delete Category {idcategory} - {CategoryService.getCategoryFromId(idcategory).Name}"))
-            return;/*nut huy*/
+                    _product = ProductService.getProductFromIdCatagory(idcategory);
+                    if (_product.Count() != 0)
+                    {
+                        await JSRuntime.InvokeAsync<string>("alert", "Cannot delete this category");
+                        return;
 
-        _product = ProductService.getProductFromIdCatagory(idcategory);
-        if (_product.Count() != 0)
-        {
-            await JSRuntime.InvokeAsync<string>("alert", "Cannot delete this category");
-            return;
-
-        }
-        else
-        {
-            CategoryService.deleteCategory(idcategory);
-            await JSRuntime.InvokeAsync<string>("alert", "This category was deleted");
-            _category = CategoryService.getAllCategories();          
-            return;
-        }
-    }
-
-    
+                    }
+                    else
+                    {
+                        CategoryService.deleteCategory(idcategory);
+                        await JSRuntime.InvokeAsync<string>("alert", "This category was deleted");
+                        NavigationManager.NavigateTo("Category");
+                        return;
+                    }
+                } 
 
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private CNC.Service.IProductService ProductService { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private CNC.Service.ICategoryService CategoryService { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime JSRuntime { get; set; }

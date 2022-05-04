@@ -41,8 +41,6 @@ namespace CNC
             services.AddScoped<IColorService, ColorService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ICustomerService, CustomerService>();
-            
-            services.AddScoped<IOrderService, OrderServicecs>();
             services.AddScoped<IBillService, BillService>();
             services.AddScoped<IVoucherService, VoucherService>();
             services.AddScoped<IBillDetailService, BillDetailService>();

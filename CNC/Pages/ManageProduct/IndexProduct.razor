@@ -43,7 +43,7 @@ else
                    <td><button class="btn btn-danger" @onclick="@(()=>BlockUnblock(value.Id,0))">Block</button></td> 
                 }
                 else if(@value.Status==0){
-                    <td><button class="btn btn-success" @onclick="@(()=>BlockUnblock(value.Id,1))">Unblock</button></td> 
+                    <td><button class="btn btn-success" @onclick="@(()=>BlockUnblock(value.Id,1))">Active</button></td> 
                 }
 
                 <td><button class="btn btn-danger" @onclick="@(()=>Delete(value.Id))">Xóa</button></td>
@@ -65,7 +65,7 @@ else
         _product = ProductService.getAllProducts();
     }
 
-    private async void Delete(string idproduct)
+    private async void Delete(int idproduct)
     {  
         if (!await JSRuntime.InvokeAsync<bool>("confirm", $"Are You Delete Product {idproduct} - {ProductService.getProductFromId(idproduct).Name}"))
             return;/*nut huy*/
@@ -86,7 +86,7 @@ else
 
         }
     }
-    private void BlockUnblock(string idproduct,int status)
+    private void BlockUnblock(int idproduct,int status)
     {
         ProductService.UpdateStatusProduct(idproduct, status);
     }

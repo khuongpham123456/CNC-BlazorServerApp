@@ -8,7 +8,7 @@ namespace CNC.Service
     public interface IBillService
     {
         IEnumerable<Bill> getAllBills();
-        Bill GetBillFromId(string id);
-        void UpdateStatus(string IdBill,int Status);
+        Bill GetBillFromId(int id);
+        void UpdateStatus(int IdBill,int Status);
     }
 }

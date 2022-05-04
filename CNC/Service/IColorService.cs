@@ -10,6 +10,6 @@ namespace CNC.Service
     {
         IEnumerable<Color> getAllColor();
 
-        Color getColorFromId(string id);
+        Color getColorFromId(int id);
     }
 }

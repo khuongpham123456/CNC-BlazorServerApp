@@ -5,7 +5,7 @@ namespace CNC.Service
 {
     public interface IBillDetailService
     {
-        public IEnumerable<BillDetail> GetBillDetailFromId(string BillId);
-        public IEnumerable<BillDetail> GetListResultFromIdProduct(string IdProduct);
+        public IEnumerable<BillDetail> GetBillDetailFromId(int BillId);
+        public IEnumerable<BillDetail> GetListResultFromIdProduct(int IdProduct);
     }
 }

@@ -13,77 +13,77 @@ namespace CNC.Pages.ManageProduct
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Components;
 #nullable restore
-#line 1 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 1 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using System.Net.Http;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 2 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using Microsoft.AspNetCore.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 3 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using Microsoft.AspNetCore.Components.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 4 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using Microsoft.AspNetCore.Components.Forms;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 5 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using Microsoft.AspNetCore.Components.Routing;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 6 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using Microsoft.AspNetCore.Components.Web;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 7 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 7 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 8 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 8 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using Microsoft.JSInterop;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 9 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 9 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using CNC;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 10 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 10 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using CNC.Shared;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Users\ASUS\Downloads\cnc-master\CNC\Pages\ManageProduct\IndexProduct.razor"
+#line 2 "D:\Individual_Project\C#\cnc\CNC\Pages\ManageProduct\IndexProduct.razor"
 using CNC.Entities;
 
 #line default
@@ -98,7 +98,7 @@ using CNC.Entities;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 58 "C:\Users\ASUS\Downloads\cnc-master\CNC\Pages\ManageProduct\IndexProduct.razor"
+#line 58 "D:\Individual_Project\C#\cnc\CNC\Pages\ManageProduct\IndexProduct.razor"
        
 
     private IEnumerable<CNC.Entities.Product> _product;
@@ -109,7 +109,7 @@ using CNC.Entities;
         _product = ProductService.getAllProducts();
     }
 
-    private async void Delete(string idproduct)
+    private async void Delete(int idproduct)
     {  
         if (!await JSRuntime.InvokeAsync<bool>("confirm", $"Are You Delete Product {idproduct} - {ProductService.getProductFromId(idproduct).Name}"))
             return;/*nut huy*/
@@ -130,7 +130,7 @@ using CNC.Entities;
 
         }
     }
-    private void BlockUnblock(string idproduct,int status)
+    private void BlockUnblock(int idproduct,int status)
     {
         ProductService.UpdateStatusProduct(idproduct, status);
     }

@@ -39,7 +39,7 @@
     }
     private async void Save_Click()
     {
-        
+
         int count = CategoryService.CountCategoryFromName(category.Name);
         if (count != 0)
         {
@@ -48,11 +48,8 @@
         }
         else
         {
-            int id = int.Parse( CategoryService.TakeLastIDCategory() );
             Category newcategory = new Category();
-            newcategory.Id =  (id+1).ToString();
             newcategory.Name = category.Name;
-            newcategory.Status = 0;
             CategoryService.addCategory(newcategory);
             await JSRuntime.InvokeAsync<string>("alert", "Add new category success");
             NavigationManager.NavigateTo("/Category");

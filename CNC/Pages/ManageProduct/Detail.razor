@@ -22,7 +22,6 @@ else
                 <th>Quantity</th>
                 <th>Size</th>
                 <th>Color</th>
-                <th>Image</th>
             </tr>
         </thead>
         <tbody>
@@ -35,7 +34,6 @@ else
                 <td>@value.Quantity</td>
                 <td>@SizeService.getSizeFromId(@value.SizeId).Name</td>
                 <td>@ColorService.getColorFromId(@value.ColorId).Name</td>
-                <td>@value.Image</td>
             </tr>
             }
         </tbody>
@@ -52,7 +50,7 @@ else
 
     protected override void OnInitialized()
     {
-        _sizecolorproduct = SizeColorProductService.GetResultFromIdProduct(IdProduct);
+        _sizecolorproduct = SizeColorProductService.GetResultFromIdProduct(int.Parse(IdProduct));
     }
 }
 

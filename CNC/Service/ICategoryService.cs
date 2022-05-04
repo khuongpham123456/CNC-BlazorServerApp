@@ -10,12 +10,13 @@ namespace CNC.Service
     {
         IEnumerable<Category> getAllCategories();
         void addCategory(Category category);
-        void updateCategory(string idcategory,string name);
-        void deleteCategory(string idcategory);
-        Category getCategoryFromId(string id);
-        void UpdateStatusCategory(string idcategory, int status);
+        void updateCategory(int idcategory,string name);
+        void deleteCategory(int idcategory);
+        Category getCategoryFromId(int id);
+        void UpdateStatusCategory(int idcategory, int status);
         int CountCategoryFromName(string name);
 
-        string TakeLastIDCategory();
+        int TakeLastIDCategory();
+        Category checkNameInCategory(int id, String name);
     }
 }

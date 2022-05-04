@@ -9,8 +9,8 @@ namespace CNC.Entities
 {
     public class Account
     {
-        [Key]
-        public string Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
 
         [Required]
         [MaxLength(250)]

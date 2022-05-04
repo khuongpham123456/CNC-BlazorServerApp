@@ -9,13 +9,14 @@ namespace CNC.Service
     public interface IProductService
     {
         IEnumerable<Product> getAllProducts();
-        IEnumerable<Product> getAllProductsFromId(string id);
+        IEnumerable<Product> getAllProductsFromName(string name);
         void addProduct(Product product);
         void updateProduct(Product product);
-        void deleteProduct(string idproduct);
-        Product getProductFromId(string id);
-        string getNewIdProduct(); 
-        void UpdateStatusProduct(string idproduct,int status);
-        IEnumerable<Product> getProductFromIdCatagory(string idcategory);
+        void deleteProduct(int idproduct);
+        Product getProductFromId(int id);
+        int TakeLastIDProduct(); 
+        void UpdateStatusProduct(int idproduct,int status);
+        IEnumerable<Product> getProductFromIdCatagory(int idcategory);
+        Product findByNameProduct(string name);
     }
 }

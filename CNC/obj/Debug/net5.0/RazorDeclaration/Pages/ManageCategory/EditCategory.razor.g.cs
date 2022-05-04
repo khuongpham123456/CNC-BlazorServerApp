@@ -13,77 +13,77 @@ namespace CNC.Pages.ManageCategory
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Components;
 #nullable restore
-#line 1 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 1 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using System.Net.Http;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 2 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using Microsoft.AspNetCore.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 3 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using Microsoft.AspNetCore.Components.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 4 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using Microsoft.AspNetCore.Components.Forms;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 5 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using Microsoft.AspNetCore.Components.Routing;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 6 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using Microsoft.AspNetCore.Components.Web;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 7 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 7 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 8 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 8 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using Microsoft.JSInterop;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 9 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 9 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using CNC;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 10 "C:\Users\ASUS\Downloads\cnc-master\CNC\_Imports.razor"
+#line 10 "D:\Individual_Project\C#\cnc\CNC\_Imports.razor"
 using CNC.Shared;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Users\ASUS\Downloads\cnc-master\CNC\Pages\ManageCategory\EditCategory.razor"
+#line 2 "D:\Individual_Project\C#\cnc\CNC\Pages\ManageCategory\EditCategory.razor"
 using CNC.Entities;
 
 #line default
@@ -98,50 +98,30 @@ using CNC.Entities;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 40 "C:\Users\ASUS\Downloads\cnc-master\CNC\Pages\ManageCategory\EditCategory.razor"
-      
+#line 39 "D:\Individual_Project\C#\cnc\CNC\Pages\ManageCategory\EditCategory.razor"
+ 
     [Parameter]
     public string IdCategory{ get; set; }
 
     private Category category;
     protected override void OnInitialized()
     {
-        category = CategoryService.getCategoryFromId(IdCategory);
+        category = CategoryService.getCategoryFromId(int.Parse(IdCategory));
     }
     private async void Save_Click()
     {
 
-        int count = CategoryService.CountCategoryFromName(category.Name);
-
-        if (count != 0)
-        {   
-            foreach(Category cate in CategoryService.getAllCategories())
-            {
-                if(category.Id==cate.Id && category.Name == cate.Name)
-                {
-                    await JSRuntime.InvokeAsync<string>("alert", "Update success");
-                    NavigationManager.NavigateTo("/Category");
-                    return;
-                }
-                else if(category.Id!=cate.Id && category.Name == cate.Name)
-                {
-                    await JSRuntime.InvokeAsync<string>("alert", "This name of category already exists");
-               return;
-                }
-            }
-            
-            
-        }
-        else
+        if (CategoryService.checkNameInCategory(category.Id ,category.Name) != null)
         {
-
-                CategoryService.updateCategory(category.Id, category.Name);
-                await JSRuntime.InvokeAsync<string>("alert", "Update success");
-                NavigationManager.NavigateTo("/Category");
-                return;  
+            await JSRuntime.InvokeAsync<string>("alert", "This name of category already exists");
+            NavigationManager.NavigateTo("/Category/Update/{"+ category.Id + "}");
+            return;
         }
-        
-           
+
+        CategoryService.updateCategory(category.Id, category.Name);
+        await JSRuntime.InvokeAsync<string>("alert", "Update success");
+        NavigationManager.NavigateTo("/Category");
+        return;
     }
 
 #line default

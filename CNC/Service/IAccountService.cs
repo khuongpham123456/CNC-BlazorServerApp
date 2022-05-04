@@ -9,11 +9,11 @@ namespace CNC.Service
         IEnumerable<Account> GetAllAccountCustomer();
         IEnumerable<Account> GetAllAccountEmployee();
 
-        Account GetAccount(string id);
+        Account GetAccount(int id);
 
-        void UpdateStatus(string Id, int status);
+        void UpdateStatus(int Id, int status);
         void DeleteAccount(Account account);
 
-        Account GetAccountFromAccountId(string AccountId);
+        Account GetAccountFromAccountId(int AccountId);
     }
 }

@@ -20,39 +20,36 @@ namespace CNC.Service
             _appLicationDbContext.SaveChanges();
         }
 
-        public void deleteProduct(string idproduct)
+        public void deleteProduct(int idproduct)
         {
            Product productdelete=_appLicationDbContext.Products.FirstOrDefault(x=>x.Id == idproduct);
             _appLicationDbContext.Remove(productdelete);
             _appLicationDbContext.SaveChanges(true);
         }
 
-        public IEnumerable<Product> getAllProductsFromId(string id)
+        public IEnumerable<Product> getAllProductsFromName(string name)
         {
-            return _appLicationDbContext.Products.Where(x => x.Name == id);
+            return _appLicationDbContext.Products.Where(x => x.Name == name);
         }
 
-        public string getNewIdProduct()
-        {
-            return _appLicationDbContext.Products.OrderByDescending(x => x.Id).Take(1).First().Id;
-        }
-
-        public Product getProductFromId(string id)
+        public Product getProductFromId(int id)
         {
             return _appLicationDbContext.Products.FirstOrDefault(x => x.Id == id);
         }
 
-        public IEnumerable<Product> getProductFromIdCatagory(string idcategory)
+        public IEnumerable<Product> getProductFromIdCatagory(int idcategory)
         {
             return _appLicationDbContext.Products.Where(x=>x.CategoryId==idcategory);
         }
+
+        
 
         public void updateProduct(Product product)
         {
             throw new NotImplementedException();
         }
 
-        public void UpdateStatusProduct(string idproduct, int status)
+        public void UpdateStatusProduct(int idproduct, int status)
         {
             Product product = getProductFromId(idproduct);
             if (product != null)
@@ -61,11 +58,24 @@ namespace CNC.Service
                 _appLicationDbContext.SaveChanges();
             }
         }
+        public int TakeLastIDProduct()
+        {
+            IEnumerable<Product> products = getAllProducts();
+            if(products.LongCount() != 0)
+            {
+                return _appLicationDbContext.Products.OrderByDescending(x => x.Id).FirstOrDefault().Id;
+            }
+            return 0;
+        }
 
-        IEnumerable<Product> IProductService.getAllProducts()
+        public IEnumerable<Product> getAllProducts()
         {
             return _appLicationDbContext.Products.ToList();
         }
 
+        public Product findByNameProduct(string name)
+        {
+            return _appLicationDbContext.Products.Where(x => x.Name == name).FirstOrDefault();
+        }
     }
 }

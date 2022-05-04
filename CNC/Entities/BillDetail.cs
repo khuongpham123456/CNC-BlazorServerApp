@@ -9,14 +9,14 @@ namespace CNC.Entities
 {
     public class BillDetail
     {
-        [Key]
-        public string Id { get; set; }
-        public string ProductId { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        public int ProductId { get; set; }
         [ForeignKey("ProductId")]
         public Product Product { get; set; }
         public int Amount { get; set; }
         public int Price { get; set; }
-        public string BillId { get; set; }
+        public int BillId { get; set; }
         [ForeignKey("BillId")]
         public Bill Bill { get; set; }
     }

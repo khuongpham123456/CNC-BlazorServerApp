@@ -3,77 +3,75 @@
 @inject IJSRuntime JSRuntime
 @inject CNC.Service.ICategoryService CategoryService
 @inject CNC.Service.IProductService ProductService
+@inject NavigationManager NavigationManager
 <h3>Manage Category</h3>
 @if (_category.LongCount() == 0)
 {
-    <p><em>Loading...</em></p>
-}
+<p><em>Loading...</em></p> }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Update</th>
-                <th>Delete</th>
-                <th>Status</th>
-                
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var value in _category)
-            {
-            <tr>
-                <td>@value.Id</td>
-                <td>@value.Name</td>
-                <td><a href="/Category/Update/@value.Id">Update</a></td>
-                <td><button class="btn btn-danger" @onclick="@(()=>Delete(value.Id))">Xóa</button></td>
-                @if(@value.Status==1){
-                   <td><button class="btn btn-danger" @onclick="@(()=>BlockUnblock(value.Id,0))">Block</button></td> 
-                }
-                else if(@value.Status==0){
-                    <td><button class="btn btn-success" @onclick="@(()=>BlockUnblock(value.Id,1))">Unblock</button></td> 
-                }
-            </tr>
-            }
-        </tbody>
-    </table>
-    <a href="/Category/Create">Add new Category</a>
-}
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Update</th>
+            <th>Delete</th>
+            <!--<th>Status</th>-->
+
+        </tr>
+    </thead>
+    <tbody bind="@_category">
+        @foreach (var value in _category)
+        {
+        <tr>
+            <td bind="_category.Id">@value.Id</td>
+            <td bind="_category.Name">@value.Name</td>
+            <td><a href="/Category/Update/@value.Id">Update</a></td>
+            <td><button class="btn btn-danger" @onclick="@(() => Delete(value.Id))">Xóa</button></td>
+            <!--if (@value.Status == 1)
+        {
+    <td><button class="btn btn-danger" @onclick="@(() => BlockUnblock(value.Id, 0))">Block</button></td>
+        }
+        else if (@value.Status == 0)
+        {
+    <td><button class="btn btn-success" @onclick="@(() => BlockUnblock(value.Id, 1))">Unblock</button></td>
+        }-->
+        </tr>}
+    </tbody>
+</table>}
+<a href="/Category/Create">Add new Category</a>
 @code {
 
-    private IEnumerable<CNC.Entities.Category> _category;
-    private IEnumerable<CNC.Entities.Product> _product;
+    @functions{ private IEnumerable<CNC.Entities.Category> _category;
+                private IEnumerable<CNC.Entities.Product> _product;
 
-    protected override void OnInitialized()
-    {
-        _category = CategoryService.getAllCategories();
+                protected override void OnInitialized()
+                {
+                    _category = CategoryService.getAllCategories();
+                }
+                private void BlockUnblock(int idcategory, int status)
+                {
+                    CategoryService.UpdateStatusCategory(idcategory, status);
+                }
+                private async void Delete(int idcategory)
+                {
+                    if (!await JSRuntime.InvokeAsync<bool>("confirm", $"Are You Delete Category {idcategory} - {CategoryService.getCategoryFromId(idcategory).Name}"))
+                        return;/*nut huy*/
+
+                    _product = ProductService.getProductFromIdCatagory(idcategory);
+                    if (_product.Count() != 0)
+                    {
+                        await JSRuntime.InvokeAsync<string>("alert", "Cannot delete this category");
+                        return;
+
+                    }
+                    else
+                    {
+                        CategoryService.deleteCategory(idcategory);
+                        await JSRuntime.InvokeAsync<string>("alert", "This category was deleted");
+                        NavigationManager.NavigateTo("Category");
+                        return;
+                    }
+                } }
     }
-    private void BlockUnblock(string idcategory, int status)
-    {
-        CategoryService.UpdateStatusCategory(idcategory, status);
-    }
-    private async void Delete(string idcategory)
-    {
-        if (!await JSRuntime.InvokeAsync<bool>("confirm", $"Are You Delete Category {idcategory} - {CategoryService.getCategoryFromId(idcategory).Name}"))
-            return;/*nut huy*/
-
-        _product = ProductService.getProductFromIdCatagory(idcategory);
-        if (_product.Count() != 0)
-        {
-            await JSRuntime.InvokeAsync<string>("alert", "Cannot delete this category");
-            return;
-
-        }
-        else
-        {
-            CategoryService.deleteCategory(idcategory);
-            await JSRuntime.InvokeAsync<string>("alert", "This category was deleted");
-            _category = CategoryService.getAllCategories();          
-            return;
-        }
-    }
-
-    
-}

@@ -13,12 +13,12 @@ namespace CNC.Service
             _applicationDbContext = applicationDbContext;
         }
 
-        IEnumerable<BillDetail> IBillDetailService.GetBillDetailFromId(string BillId)
+        IEnumerable<BillDetail> IBillDetailService.GetBillDetailFromId(int BillId)
         {
             return _applicationDbContext.BillDetails.Where(x => x.BillId == BillId);
         }
 
-        IEnumerable<BillDetail> IBillDetailService.GetListResultFromIdProduct(string IdProduct)
+        IEnumerable<BillDetail> IBillDetailService.GetListResultFromIdProduct(int IdProduct)
         {
             return _applicationDbContext.BillDetails.Where(x=>x.ProductId== IdProduct);
         }

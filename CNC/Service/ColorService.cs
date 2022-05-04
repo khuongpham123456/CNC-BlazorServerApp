@@ -19,7 +19,7 @@ namespace CNC.Service
             return _applicationDbContext.Colors.ToList();
         }
 
-        public Color getColorFromId(string id)
+        public Color getColorFromId(int id)
         {
             return _applicationDbContext.Colors.FirstOrDefault(x => x.Id == id);
         }

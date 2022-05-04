@@ -10,7 +10,7 @@ namespace CNC.Service
     {
         IEnumerable<Size> getAllSize();
         
-        Size getSizeFromId(string id);
+        Size getSizeFromId(int id);
 
        
     }

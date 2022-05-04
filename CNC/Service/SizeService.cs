@@ -19,7 +19,7 @@ namespace CNC.Service
             return _applicationDbContext.Sizes.ToList();
         }
 
-        Size ISizeService.getSizeFromId(string id)
+        Size ISizeService.getSizeFromId(int id)
         {
             return _applicationDbContext.Sizes.FirstOrDefault(x => x.Id == id);
         }

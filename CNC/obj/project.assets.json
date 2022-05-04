@@ -5802,11 +5802,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ASUS\\Downloads\\cnc-master\\CNC\\CNC.csproj",
+      "projectUniqueName": "D:\\Individual_Project\\C#\\cnc\\CNC\\CNC.csproj",
       "projectName": "CNC",
-      "projectPath": "C:\\Users\\ASUS\\Downloads\\cnc-master\\CNC\\CNC.csproj",
+      "projectPath": "D:\\Individual_Project\\C#\\cnc\\CNC\\CNC.csproj",
       "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ASUS\\Downloads\\cnc-master\\CNC\\obj\\",
+      "outputPath": "D:\\Individual_Project\\C#\\cnc\\CNC\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",

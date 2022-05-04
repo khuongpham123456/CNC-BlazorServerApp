@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ZrXiyolq3VziBko5tofS9tlNJukh81TW5jJ1InzmrIrhuGjWkISWqpqNPcrDZF0zIu+PGeNJJfIzSeWoXpA0Fw==",
+  "dgSpecHash": "2qDWwAnTwrD23e5QzdW5hPr9wwvDBEOwc3/mLC2E2S3rPu8ot1UGq4DmLj+85cf8QZDhbXBYhnwAX479EQD6uQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\ASUS\\Downloads\\cnc-master\\CNC\\CNC.csproj",
+  "projectFilePath": "D:\\Individual_Project\\C#\\cnc\\CNC\\CNC.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ASUS\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
